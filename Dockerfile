@@ -1,19 +1,13 @@
-# Використовуємо офіційний образ Node.js як базовий
-FROM node:16
+FROM node:14
 
-# Встановлюємо робочу директорію в контейнері
 WORKDIR /app
 
-# Копіюємо package.json та встановлюємо залежності
-COPY package.json .
+COPY package*.json ./
 
 RUN npm install
 
-# Копіюємо всі файли вашого проекту в контейнер
 COPY . .
 
-# Відкриваємо порт 3001 
 EXPOSE 3001
 
-# Запускаємо сервер за допомогою nodemon (або node)
-CMD ["npm", "run", "dev"]
+CMD ["node", "main.js"]
