@@ -15,4 +15,5 @@ COPY . .
 EXPOSE 3001
 
 # Команда для запуску програми
-CMD ["npm", "start"]
+CMD ["npm", "start", "--", "-h", "localhost"]
+
