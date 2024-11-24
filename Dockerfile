@@ -2,8 +2,7 @@
 FROM node:16
 
 # Встановлюємо робочу директорію
-WORKDIR /app/bc2024-6
-
+WORKDIR /app
 
 # Копіюємо package.json і інші файли
 COPY package*.json ./
@@ -14,9 +13,8 @@ RUN npm install
 # Копіюємо решту файлів програми
 COPY . .
 
-# Відкриваємо порт 3001 для доступу до програми
+# Відкриваємо порт 3000 для доступу до програми
 EXPOSE 3001
 
 # Запускаємо сервер
-CMD ["npx", "nodemon", "main.js"]
-
+CMD ["npm", "start"]
