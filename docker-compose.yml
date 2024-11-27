@@ -5,7 +5,9 @@ services:
     build: .
     ports:
       - "3000:3000"
+      - "9229:9229"
     volumes:
-      - .:/app
+      - .:/bc2024-6
     environment:
       - NODE_ENV=development
+    command: npx nodemon -L --legacy-watch -- --inspect main.js -h localhost -p 3000 -c ./cache
