@@ -1,20 +1,13 @@
-# Використовуємо офіційний Node.js образ
 FROM node:16
 
-# Встановлюємо робочу директорію
-WORKDIR /app
+WORKDIR /bc2024-6
 
-# Копіюємо package.json і інші файли
 COPY package*.json ./
 
-# Встановлюємо залежності
 RUN npm install
 
-# Копіюємо решту файлів програми
 COPY . .
 
-# Відкриваємо порт 3000 для доступу до програми
-EXPOSE 3001
+EXPOSE 3000 9229
 
-# Запускаємо сервер
-CMD ["npm", "start"]
+CMD npx nodemon --legacy-watch -- --inspect main.js -h localhost -p 3000 -c ./cache
