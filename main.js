@@ -31,6 +31,26 @@ if (!fs.existsSync(cache)) {
 
 const getNotePath = (noteName) => path.join(cache, `${noteName}.txt`);
 
+const listNotes = () => {
+  const files = fs.readdirSync(cache);
+  const notes = [];
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    try {
+      const note = {
+        name: path.basename(file, '.txt'),
+        text: fs.readFileSync(path.join(cache, file), 'utf8'),
+      };
+      notes.push(note);
+    } catch (error) {
+      console.error(`Error reading file ${file}:`, error);
+    }
+  }
+
+  return notes;
+};
+
 // Swagger налаштування
 const swaggerOptions = {
   definition: {
@@ -75,6 +95,7 @@ app.get('/', (req, res) => {
  *             schema:
  *               type: string
  */
+
 app.get('/notes', (req, res) => {
   try {
     const notes = listNotes();
@@ -114,17 +135,22 @@ app.get('/notes', (req, res) => {
  *         description: Нотатку не знайдено
  */
 app.get('/notes/:name', (req, res) => {
-  const notePath = getNotePath(req.params.name);
+  const noteName = req.params.name; // Отримуємо ім'я нотатки з параметра
+  const notePath = getNotePath(noteName); // Генеруємо шлях до файлу
+
+  // Перевірка, чи існує файл
   if (!fs.existsSync(notePath)) {
-    return res.status(404).send('Note not found');
+    return res.status(404).send(`Note "${noteName}" not found`);
   }
+
   try {
     const noteContent = fs.readFileSync(notePath, 'utf8');
-    res.send(noteContent);
+    res.type('text/plain').send(noteContent); // Надсилаємо вміст
   } catch (error) {
     res.status(500).send('Error reading the note');
   }
 });
+
 
 /**
  * @swagger
